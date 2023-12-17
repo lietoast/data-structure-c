@@ -304,6 +304,32 @@ void vector_reverse(DS *ds, dserr_t *e)
 }
 
 /**
+ * The vector_find function checks if the given element exists in the
+ * vector. If it does exist, vector_find() returns the position where
+ * the element first appear; if it doesn't, the function returns -1.
+ * If ds is not a vector, a dserr will be set.
+ */
+int64_t vector_find(DS *ds, void *element, dserr_t *e)
+{
+	int64_t i;
+	vec_t *vec;
+
+	if (!ds_is_vector(element))
+	{
+		panic(&e, &ERROR_DS_TYPE);
+		return -1;
+	}
+
+	vec = ds->structure;
+
+	for (i = 0; i < vec->len; i ++)
+		if (ds->cmpdata(element, vec->array[i]))
+			return i;
+
+	return -1;
+}
+
+/**
  * The increase_capacity function allocates more memory to the vector and returns
  * the new capacity of it.
  */

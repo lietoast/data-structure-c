@@ -87,4 +87,12 @@ void vector_sort(DS *ds, dserr_t *e);
  */
 void vector_reverse(DS *ds, dserr_t *e);
 
+/**
+ * The vector_find function checks if the given element exists in the
+ * vector. If it does exist, vector_find() returns the position where
+ * the element first appear; if it doesn't, the function returns -1.
+ * If ds is not a vector, a dserr will be set.
+ */
+int64_t vector_find(DS *ds, void *element, dserr_t *e);
+
 #endif

@@ -32,4 +32,27 @@ typedef struct vector vec_t;
  */
 bool ds_is_vector(DS *ds);
 
+struct linked_list_node
+{
+	ELETYPE data;
+	struct linked_list_node *prev;
+	struct linked_list_node *next;
+};
+
+typedef struct linked_list_node LLN;
+
+struct linked_list
+{
+	LLN *head;
+	LLN *tail;
+	int64_t len;
+};
+
+typedef struct linked_list lklist_t;
+
+/**
+ * Check if ds is a linked list.
+ */
+bool ds_is_linked_list(DS *ds);
+
 #endif
