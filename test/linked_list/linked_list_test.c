@@ -12,6 +12,7 @@ int main(void)
 	int mock_data[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	int64_t i, idx;
 	dserr_t e = NOE;
+	int *ele;
 
 	// init linked list
 	ds = linked_list_init(cmpdata);
@@ -29,6 +30,20 @@ int main(void)
 	printf("inserted some data\n");
 	print_linked_list(ds);
 
+	// delete some data
+	for (i = 0; i < 10; i ++)
+	{
+		ele = linked_list_delete(ds, 0, &e);
+		if (dscatch(e))
+		{
+			pdserr(e, "failed to delete element");
+			exit(-1);
+		}
+		printf("%d has been deleted\n", *ele);
+	}
+	printf("deleted some data\n");
+	print_linked_list(ds);
+
 	// test find()
 	for (i = 0; i < 10; i ++)
 	{
@@ -42,6 +57,14 @@ int main(void)
 			printf("%d doesn't exist in the list\n", mock_data[i]);
 		}
 	}
+
+	linked_list_update(ds, 0, &mock_data[1], &e);
+	if (dscatch(e))
+	{
+		pdserr(e, "failed to update linked list");
+		exit(-1);
+	}
+	print_linked_list(ds);
 
 	// free linked list
 	linked_list_destroy(ds);

@@ -51,4 +51,25 @@ void linked_list_insert(DS *ds, int64_t i, void *ele, dserr_t *e);
  */
 int64_t linked_list_length(DS *ds);
 
+/**
+ * The linked_list_is_empty function returns if there is no data stored in the list.
+ * The function returns false when ds isn't a linked list.
+ */
+bool linked_list_is_empty(DS *ds);
+
+/**
+ * The linked_list_delete function deletes one element in position i and returns the element 
+ * that was deleted. If ds isn't a linked list, no operation is performed except NULL 
+ * is returned and a dserr is set. If position i is not available, the function returns NULL 
+ * and sets a dserr.
+ */
+void *linked_list_delete(DS *ds, int64_t i, dserr_t *e);
+
+/**
+ * The linked_list_update function updates the value of the ith element stored in the list. 
+ * If ds isn't a linked list or position i is not available, no operation is performed exc-
+ * ept setting dserr.
+ */
+void linked_list_update(DS *ds, int64_t i, void *val, dserr_t *e);
+
 #endif

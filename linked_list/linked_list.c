@@ -216,6 +216,104 @@ int64_t linked_list_length(DS *ds)
 	return l->len;
 }
 
+/**
+ * The linked_list_is_empty function returns if there is no data stored in the list.
+ * The function returns false when ds isn't a linked list.
+ */
+bool linked_list_is_empty(DS *ds)
+{
+	if (!ds_is_linked_list(ds))
+		return false;
+	
+	return linked_list_length(ds) == 0;
+}
+
+/**
+ * The linked_list_delete function deletes one element in position i and returns the element 
+ * that was deleted. If ds isn't a linked list, no operation is performed except NULL 
+ * is returned and a dserr is set. If position i is not available, the function returns NULL 
+ * and sets a dserr.
+ */
+void *linked_list_delete(DS *ds, int64_t i, dserr_t *e)
+{
+	int64_t j;
+	lklist_t *l;
+	LLN *n;
+	ELETYPE r;
+
+	if (!ds_is_linked_list(ds))
+	{
+		panic(&e, &ERROR_DS_TYPE);
+		return NULL;
+	}
+
+	if (i < 0 || i >= linked_list_length(ds))
+	{
+		panic(&e, &ERROR_OUT_OF_RANGE);
+		return NULL;
+	}
+
+	l = ds->structure;
+	n = l->head;
+
+	for (j = 0; j < i; j ++)
+		n = n->next;
+	
+	r = n->data;
+	
+	if (l->len == 1)
+	{
+		l->head = l->tail = NULL;
+		l->len --;
+		free(n);
+		return r;
+	}
+
+	n->prev->next = n->next;
+	n->next->prev = n->prev;
+	if (n == l->head)
+		l->head = n->next;
+	if (n == l->tail)
+		l->tail = n->prev;
+
+	free(n);
+	l->len --;
+	
+	return r;
+}
+
+/**
+ * The linked_list_update function updates the value of the ith element stored in the list. 
+ * If ds isn't a linked list or position i is not available, no operation is performed ex-.
+ * cept setting dserr.
+ */
+void linked_list_update(DS *ds, int64_t i, void *val, dserr_t *e)
+{
+	lklist_t *l;
+	int64_t j;
+	LLN *n;
+
+	if (!ds_is_linked_list(ds))
+	{
+		panic(&e, &ERROR_DS_TYPE);
+		return;
+	}
+
+	l = ds->structure;
+
+	if (i < 0 || i >= l->len)
+	{
+		panic(&e, &ERROR_OUT_OF_RANGE);
+		return;
+	}
+
+	n = l->head;
+	for (j = 0; j < i; j ++)
+		n = n->next;
+	
+	n->data = val;
+}
+
 
 
 
