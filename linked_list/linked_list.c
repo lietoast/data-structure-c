@@ -1,5 +1,7 @@
 #include "linked_list.h"
 
+#include <stdio.h>
+
 /**
  * The linked_list_init function creates a linked list and returns it.
  * If there is not enough room to create it, the function returns NULL.
@@ -96,7 +98,7 @@ void *linked_list_get(DS *ds, int64_t i, dserr_t *e)
 	np = &(l->head);
 	for (j = 0; j < i; j ++)
 	{
-		np = (*np)->next;
+		np = &((*np)->next);
 	}
 
 	return (*np)->data;
@@ -111,20 +113,19 @@ int64_t linked_list_find(DS *ds, void *key)
 {
 	int64_t i;
 	lklist_t *l;
-	LLN **np;
+	LLN *n;
 
 	if (!ds_is_linked_list(ds))
 		return -1;
 	
 	l = ds->structure;
 	
-	np = &(l->head);
-	i = 0;
+	n = l->head;
 	for (i = 0; i < l->len; i ++)
 	{
-		if (ds->cmpdata((*np)->data, key) == 0)
+		if ((ds->cmpdata(n->data, key)) == 0)
 			return i;
-		*np = (*np)->next;
+		n = n->next;
 	}
 
 	return -1;
@@ -140,6 +141,7 @@ void linked_list_insert(DS *ds, int64_t i, void *ele, dserr_t *e)
 	int64_t j;
 	lklist_t *l;
 	LLN *prev, *cur;
+	LLN *n;
 
 	if (!ds_is_linked_list(ds))
 	{
@@ -153,8 +155,76 @@ void linked_list_insert(DS *ds, int64_t i, void *ele, dserr_t *e)
 		return;
 	}
 
-	// TODO: finish this function
+	n = malloc(sizeof(LLN));
+	if (n == NULL)
+	{
+		panic(&e, &ERROR_NO_MEMORY);
+		return;
+	}
+	n->data = ele;
+	n->prev = n;
+	n->next = n;
+
+	if (l->len <= 0)
+	{
+		l->head = l->tail = n;
+		l->len ++;
+		return;
+	}
+
+	if (i == l->len)
+	{
+		l->tail->next = n;
+		n->prev = l->tail;
+
+		l->head->prev = n;
+		n->next = l->head;
+
+		l->tail = n;
+		l->len ++;
+
+		return;
+	}
+
+	cur = l->head;
+	for (j = 0; j <= i; j ++)
+		cur = cur->next;
+	prev = cur->prev;
+
+	prev->next = n;
+	n->prev = prev;
+
+	cur->prev = n;
+	n->next = cur;
+	
+	l->len ++;
 }
+
+/**
+ * The linked_list_length function returns number of elements stored in the linked
+ * list. If ds isn't a linked list, the function returns -1.
+ */
+int64_t linked_list_length(DS *ds)
+{
+	lklist_t *l;
+
+	if (!ds_is_linked_list(ds))
+		return -1;
+	
+	l = ds->structure;
+
+	return l->len;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

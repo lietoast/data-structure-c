@@ -45,4 +45,10 @@ int64_t linked_list_find(DS *ds, void *key);
  */
 void linked_list_insert(DS *ds, int64_t i, void *ele, dserr_t *e);
 
+/**
+ * The linked_list_length function returns number of elements stored in the linked
+ * list. If ds isn't a linked list, the function returns -1.
+ */
+int64_t linked_list_length(DS *ds);
+
 #endif

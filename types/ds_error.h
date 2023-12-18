@@ -15,6 +15,7 @@ typedef struct ds_error dserr_t;
 
 static const dserr_t ERROR_DS_TYPE = {0, "data structure type mismatch"};
 static const dserr_t ERROR_OUT_OF_RANGE = {1, "index out of range"};
+static const dserr_t ERROR_NO_MEMORY = {2, "out of memory"};
 
 static const dserr_t NOE = {-1, "everything is fine"};
 
